@@ -9,4 +9,5 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - 192.168.64.23-192.168.64.200 
+      # On Windows we must give the IP address range starting with 127.0.0
+      - 127.0.0.240-127.0.0.250 

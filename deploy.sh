@@ -1,16 +1,22 @@
 #!/bin/bash
-res1=$(date +%s)
+SECONDS=0
 ./1-deploy-kubeadm-master.sh
+masterduration=$SECONDS
+echo "############################################################################"
+echo "Master node create and configure took $(($masterduration / 60)) minutes and $(($masterduration % 60)) seconds."
+echo "############################################################################"
+SECONDS=0
 ./2-deploy-kubeadm-nodes.sh
+workerduration=$SECONDS
+echo "############################################################################"
+echo "Worker node create and configure took$(($workerduration / 60)) minutes and $(($workerduration % 60)) seconds."
+echo "############################################################################"
+SECONDS=0
 ./3-kubeadm_join_nodes.sh
-res2=$(date +%s)
-dt=$(echo "$res2 - $res1" | bc)
-dd=$(echo "$dt/86400" | bc)
-dt2=$(echo "$dt-86400*$dd" | bc)
-dh=$(echo "$dt2/3600" | bc)
-dt3=$(echo "$dt2-3600*$dh" | bc)
-dm=$(echo "$dt3/60" | bc)
-ds=$(echo "$dt3-60*$dm" | bc)
-# printf "Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
-printf "Total runtime in minutes was: %02d:%02.f\n" $dm $ds
+joinduration=$SECONDS
+echo "############################################################################"
+echo "Join nodes took $(($joinduration / 60)) minutes and $(($joinduration % 60)) seconds."
+echo "############################################################################"
+totalduration=$((masterduration + workerduration + joinduration))
+echo "Creating and configuring cluster took $(($totalduration / 60)) minutes and $(($totalduration % 60)) seconds elapsed."
 echo "############################################################################"

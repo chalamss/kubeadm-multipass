@@ -1,5 +1,6 @@
 #!/bin/bash
-multipass launch ubuntu --name master --cpus 2 --mem 2G --disk 8G
+# bionic is Ubunti version 18.04 LTS
+multipass launch bionic --name master --cpus 2 --mem 6G --disk 12G
 multipass exec master -- bash -c 'wget https://packages.cloud.google.com/apt/doc/apt-key.gpg'
 multipass exec master -- bash -c 'sudo apt-key add apt-key.gpg'
 multipass exec master -- bash -c 'sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"'

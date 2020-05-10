@@ -1,6 +1,7 @@
 #!/bin/bash
 NODES=$(echo worker{1..2})
-for NODE in ${NODES}; do multipass launch --name ${NODE} --cpus 2 --mem 2G --disk 8G; done
+# bionic is Ubunti version 18.04 LTS
+for NODE in ${NODES}; do multipass launch bionic --name ${NODE} --cpus 2 --mem 4G --disk 12G; done
 
 for NODE in ${NODES}; do
 multipass exec ${NODE} -- bash -c 'wget https://packages.cloud.google.com/apt/doc/apt-key.gpg'
@@ -21,9 +22,7 @@ multipass exec ${NODE} -- bash -c 'sudo apt-mark hold kubelet kubeadm kubectl'
 multipass exec ${NODE} -- bash -c 'sudo swapoff -a'
 multipass exec ${NODE} -- bash -c  "sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab"
 multipass exec ${NODE} -- bash -c 'sudo sysctl net.bridge.bridge-nf-call-iptables=1'
-multipass exec ${NODE} -- bash -c 'sudo systemctl enable kubelet.service'
 done
 
 echo "Now running kubeadm join nodes"
 echo "We're ready soon :-)"
-
